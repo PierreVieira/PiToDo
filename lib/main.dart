@@ -14,6 +14,9 @@ class ToDoPi extends StatelessWidget {
 }
 
 class FormularioTarefa extends StatelessWidget {
+  final TextEditingController _controladorTitulo = TextEditingController();
+  final TextEditingController _controladorDescricao = TextEditingController();
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -23,8 +26,9 @@ class FormularioTarefa extends StatelessWidget {
       body: Column(
         children: <Widget>[
           Padding(
-            padding: const EdgeInsets.all(12.0),
+            padding: const EdgeInsets.all(16.0),
             child: TextField(
+              controller: _controladorTitulo,
               style: TextStyle(
                 fontSize: 24.0,
               ),
@@ -34,18 +38,30 @@ class FormularioTarefa extends StatelessWidget {
             ),
           ),
           Padding(
-            padding: const EdgeInsets.all(12.0),
+            padding: const EdgeInsets.all(16.0),
             child: TextField(
+              controller: _controladorDescricao,
               style: TextStyle(
                 fontSize: 16.0,
               ),
               decoration:
-                  InputDecoration(labelText: 'Detalhes', hintText: 'Descrição'),
+                  InputDecoration(icon: Icon(Icons.description), labelText: 'Detalhes', hintText: 'Descrição'),
               keyboardType: TextInputType.text,
             ),
           ),
           RaisedButton(
-            onPressed: () {},
+            onPressed: () {
+              String tituloTarefa = _controladorTitulo.text;
+              String conteudoDescricao = _controladorDescricao.text;
+              if (conteudoDescricao == null) {
+                conteudoDescricao = '';
+              }
+              if (tituloTarefa != null) {
+                //adicioanr a tarefa na lista de tarefas
+              }
+              debugPrint('$tituloTarefa');
+              debugPrint('$conteudoDescricao');
+            },
             child: Text('Adicionar'),
           )
         ],
