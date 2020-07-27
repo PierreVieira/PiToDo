@@ -25,46 +25,69 @@ class FormularioTarefa extends StatelessWidget {
       ),
       body: Column(
         children: <Widget>[
-          Padding(
-            padding: const EdgeInsets.all(16.0),
-            child: TextField(
-              controller: _controladorTitulo,
-              style: TextStyle(
-                fontSize: 24.0,
-              ),
-              decoration:
-                  InputDecoration(labelText: 'Tarefa', hintText: 'Título'),
-              keyboardType: TextInputType.text,
-            ),
+          EditorTarefa(
+            controlador: _controladorTitulo,
+            labelText: 'Tarefa',
+            hintText: 'Titulo',
+            fontSize: 24.0,
           ),
-          Padding(
-            padding: const EdgeInsets.all(16.0),
-            child: TextField(
-              controller: _controladorDescricao,
-              style: TextStyle(
-                fontSize: 16.0,
-              ),
-              decoration:
-                  InputDecoration(icon: Icon(Icons.description), labelText: 'Detalhes', hintText: 'Descrição'),
-              keyboardType: TextInputType.text,
-            ),
+          EditorTarefa(
+            controlador: _controladorDescricao,
+            labelText: 'Detalhes',
+            hintText: 'Descrição',
+            fontSize: 16.0,
+            icone: Icons.description,
           ),
           RaisedButton(
-            onPressed: () {
-              String tituloTarefa = _controladorTitulo.text;
-              String conteudoDescricao = _controladorDescricao.text;
-              if (conteudoDescricao == null) {
-                conteudoDescricao = '';
-              }
-              if (tituloTarefa != null) {
-                //adicioanr a tarefa na lista de tarefas
-              }
-              debugPrint('$tituloTarefa');
-              debugPrint('$conteudoDescricao');
-            },
+            onPressed: _criarTarefa,
             child: Text('Adicionar'),
           )
         ],
+      ),
+    );
+  }
+
+  void _criarTarefa() {
+    String tituloTarefa = _controladorTitulo.text;
+    String conteudoDescricao = _controladorDescricao.text;
+    if (conteudoDescricao == null) {
+      conteudoDescricao = '';
+    }
+    if (tituloTarefa != null) {
+      Tarefa tarefaCriada = Tarefa(tituloTarefa, conteudoDescricao);
+      debugPrint(tarefaCriada.toString());
+    }
+  }
+}
+
+class EditorTarefa extends StatelessWidget {
+  final TextEditingController controlador;
+  final String labelText;
+  final String hintText;
+  final double fontSize;
+  final IconData icone;
+
+  EditorTarefa(
+      {this.controlador,
+      this.labelText,
+      this.hintText,
+      this.fontSize,
+      this.icone});
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.all(16.0),
+      child: TextField(
+        controller: controlador,
+        style: TextStyle(
+          fontSize: this.fontSize,
+        ),
+        decoration: InputDecoration(
+            labelText: this.labelText,
+            hintText: this.hintText,
+            icon: this.icone != null ? Icon(this.icone) : null),
+        keyboardType: TextInputType.text,
       ),
     );
   }
@@ -116,6 +139,10 @@ class ItemTarefa extends StatelessWidget {
 
 class Tarefa {
   final String titulo, descricao;
-
   Tarefa(this.titulo, this.descricao);
+
+  @override
+  String toString() {
+    return 'Tarefa{titulo: $titulo, descricao: $descricao}';
+  }
 }
