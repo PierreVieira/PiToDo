@@ -7,7 +7,7 @@ class ToDoPi extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       home: Scaffold(
-        body: FormularioTarefa(),
+        body: ListaTarefas(),
       ),
     );
   }
@@ -39,7 +39,7 @@ class FormularioTarefa extends StatelessWidget {
             icone: Icons.description,
           ),
           RaisedButton(
-            onPressed: _criarTarefa,
+            onPressed: () => _criarTarefa(context),
             child: Text('Adicionar'),
           )
         ],
@@ -47,7 +47,7 @@ class FormularioTarefa extends StatelessWidget {
     );
   }
 
-  void _criarTarefa() {
+  void _criarTarefa(BuildContext context) {
     String tituloTarefa = _controladorTitulo.text;
     String conteudoDescricao = _controladorDescricao.text;
     if (conteudoDescricao == null) {
@@ -56,6 +56,7 @@ class FormularioTarefa extends StatelessWidget {
     if (tituloTarefa != null) {
       Tarefa tarefaCriada = Tarefa(tituloTarefa, conteudoDescricao);
       debugPrint(tarefaCriada.toString());
+      Navigator.pop(context, tarefaCriada);
     }
   }
 }
@@ -94,26 +95,33 @@ class EditorTarefa extends StatelessWidget {
 }
 
 class ListaTarefas extends StatelessWidget {
+  final List<Tarefa> _tarefas = List();
   @override
   Widget build(BuildContext context) {
     // TODO: implement build
+    _tarefas.add(Tarefa('Fazer MVP', 'Descricao: Fazendo o MVP'));
     return Scaffold(
       appBar: AppBar(
         title: Text('Minhas Tarefas'),
       ),
-      body: Column(
-        children: <Widget>[
-          ItemTarefa(Tarefa('Fazer MVP de Flutter',
-              'O MVP de Flutter deve ser feito seguindo os padrões arara premium...')),
-          ItemTarefa(Tarefa('Fazer exercícios físicos',
-              'Às 22:00 deve-se começar com 1 hora de exercícios de calistenia, po...')),
-          ItemTarefa(Tarefa('Fazer site Chevals',
-              'O site da Chevals deve ser feito utilizando a tecnologia WordPress, para is...')),
-        ],
+      body: ListView.builder(
+        itemCount: _tarefas.length,
+        itemBuilder: (BuildContext context, int index) {
+          final Tarefa tarefa = _tarefas[index];
+          return ItemTarefa(tarefa);
+        },
       ),
       floatingActionButton: FloatingActionButton(
         child: Icon(Icons.add),
-        onPressed: () {},
+        onPressed: () {
+          final Future<Tarefa> future = Navigator.push(context,
+              MaterialPageRoute(builder: (context) => FormularioTarefa()));
+          future.then((tarefaRecebida) {
+            debugPrint('chegou no then do future');
+            debugPrint('$tarefaRecebida');
+            _tarefas.add(tarefaRecebida);
+          });
+        },
       ),
     );
   }
@@ -139,6 +147,7 @@ class ItemTarefa extends StatelessWidget {
 
 class Tarefa {
   final String titulo, descricao;
+
   Tarefa(this.titulo, this.descricao);
 
   @override
