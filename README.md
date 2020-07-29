@@ -4,6 +4,7 @@ Aplicação mobile feita em Flutter que consiste em um to-do list.
 
 A aplicação é incentivada por um MVP proposto pela **[Commit Jr](https://commitjr.com)**.
 
+Clique [aqui](https://youtu.be/e6oTH__Vt3w) para assistir um vídeo da versão alpha 1.0.
 ## Getting Started
 
 This project is a starting point for a Flutter application.
