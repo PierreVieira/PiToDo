@@ -11,8 +11,9 @@ class ToDoPi extends StatelessWidget {
           buttonTheme: ButtonThemeData(
               buttonColor: Colors.blue[700],
               textTheme: ButtonTextTheme.primary),
-          brightness: Brightness.dark),
-      themeMode: ThemeMode.dark,
+          brightness: Brightness.dark
+      ),
+//      themeMode: ThemeMode.dark,
       home: ListaTarefas(),
     );
   }

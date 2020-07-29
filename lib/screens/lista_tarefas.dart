@@ -3,6 +3,8 @@ import 'package:to_do_list/models/tarefa.dart';
 
 import 'formulario_tarefa.dart';
 
+bool _check = false;
+
 class ListaTarefas extends StatefulWidget {
   @override
   _ListaTarefasState createState() => _ListaTarefasState();
@@ -10,6 +12,7 @@ class ListaTarefas extends StatefulWidget {
 
 class _ListaTarefasState extends State<ListaTarefas> {
   final List<Tarefa> _tarefas = List();
+
   @override
   Widget build(BuildContext context) {
     // TODO: implement build
@@ -42,20 +45,40 @@ class _ListaTarefasState extends State<ListaTarefas> {
   }
 }
 
-class ItemTarefa extends StatelessWidget {
+class ItemTarefa extends StatefulWidget {
   Tarefa _tarefa;
 
   ItemTarefa(this._tarefa);
 
   @override
+  _ItemTarefaState createState() => _ItemTarefaState();
+}
+
+class _ItemTarefaState extends State<ItemTarefa> {
+  @override
   Widget build(BuildContext context) {
     // TODO: implement build
     return Card(
-      child: ListTile(
-        leading: Icon(Icons.check_box_outline_blank),
-        title: Text(_tarefa.titulo),
-        subtitle: Text(_tarefa.descricao),
+      child: CheckboxListTile(
+        title: Text(widget._tarefa.titulo),
+        subtitle: Text(widget._tarefa.descricao),
+        controlAffinity: ListTileControlAffinity.platform,
+        value: _check,
+        onChanged: (bool value) {
+          setState((){
+            _check = value;
+          });
+        },
+        activeColor: Colors.blueAccent,
+        checkColor: Colors.white,
       ),
     );
+//    return Card(
+//      child: ListTile(
+//        leading: Icon(Icons.check_box_outline_blank),
+//        title: Text(_tarefa.titulo),
+//        subtitle: Text(_tarefa.descricao),
+//      ),
+//    );
   }
 }
