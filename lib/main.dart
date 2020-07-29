@@ -6,15 +6,27 @@ class ToDoPi extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      home: Scaffold(
-        body: ListaTarefas(),
-      ),
+      theme: ThemeData(
+          primaryColor: Colors.blue[700],
+          accentColor: Colors.blue[700],
+          buttonTheme: ButtonThemeData(
+              buttonColor: Colors.blue[700],
+              textTheme: ButtonTextTheme.primary),
+          brightness: Brightness.dark),
+      themeMode: ThemeMode.dark,
+      home: ListaTarefas(),
     );
   }
 }
 
-class FormularioTarefa extends StatelessWidget {
+class FormularioTarefa extends StatefulWidget {
+  @override
+  _FormularioTarefaState createState() => _FormularioTarefaState();
+}
+
+class _FormularioTarefaState extends State<FormularioTarefa> {
   final TextEditingController _controladorTitulo = TextEditingController();
+
   final TextEditingController _controladorDescricao = TextEditingController();
 
   @override
@@ -23,26 +35,28 @@ class FormularioTarefa extends StatelessWidget {
       appBar: AppBar(
         title: Text('Criar Tarefa'),
       ),
-      body: Column(
-        children: <Widget>[
-          EditorTarefa(
-            controlador: _controladorTitulo,
-            labelText: 'Tarefa',
-            hintText: 'Titulo',
-            fontSize: 24.0,
-          ),
-          EditorTarefa(
-            controlador: _controladorDescricao,
-            labelText: 'Detalhes',
-            hintText: 'Descrição',
-            fontSize: 16.0,
-            icone: Icons.description,
-          ),
-          RaisedButton(
-            onPressed: () => _criarTarefa(context),
-            child: Text('Adicionar'),
-          )
-        ],
+      body: SingleChildScrollView(
+        child: Column(
+          children: <Widget>[
+            EditorTarefa(
+              controlador: _controladorTitulo,
+              labelText: 'Tarefa',
+              hintText: 'Titulo',
+              fontSize: 24.0,
+            ),
+            EditorTarefa(
+              controlador: _controladorDescricao,
+              labelText: 'Detalhes',
+              hintText: 'Descrição',
+              fontSize: 16.0,
+              icone: Icons.description,
+            ),
+            RaisedButton(
+              onPressed: () => _criarTarefa(context),
+              child: Text('Adicionar'),
+            )
+          ],
+        ),
       ),
     );
   }
@@ -94,12 +108,16 @@ class EditorTarefa extends StatelessWidget {
   }
 }
 
-class ListaTarefas extends StatelessWidget {
+class ListaTarefas extends StatefulWidget {
+  @override
+  _ListaTarefasState createState() => _ListaTarefasState();
+}
+
+class _ListaTarefasState extends State<ListaTarefas> {
   final List<Tarefa> _tarefas = List();
   @override
   Widget build(BuildContext context) {
     // TODO: implement build
-    _tarefas.add(Tarefa('Fazer MVP', 'Descricao: Fazendo o MVP'));
     return Scaffold(
       appBar: AppBar(
         title: Text('Minhas Tarefas'),
@@ -117,9 +135,11 @@ class ListaTarefas extends StatelessWidget {
           final Future<Tarefa> future = Navigator.push(context,
               MaterialPageRoute(builder: (context) => FormularioTarefa()));
           future.then((tarefaRecebida) {
-            debugPrint('chegou no then do future');
-            debugPrint('$tarefaRecebida');
-            _tarefas.add(tarefaRecebida);
+            setState(() {
+              if (tarefaRecebida != null) {
+                _tarefas.add(tarefaRecebida);
+              }
+            });
           });
         },
       ),
