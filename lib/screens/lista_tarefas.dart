@@ -15,7 +15,6 @@ class _ListaTarefasState extends State<ListaTarefas> {
 
   @override
   Widget build(BuildContext context) {
-    // TODO: implement build
     return Scaffold(
       appBar: AppBar(
         title: Text('Minhas Tarefas'),
@@ -57,7 +56,6 @@ class ItemTarefa extends StatefulWidget {
 class _ItemTarefaState extends State<ItemTarefa> {
   @override
   Widget build(BuildContext context) {
-    // TODO: implement build
     return Card(
       child: CheckboxListTile(
         title: Text(widget._tarefa.titulo),
@@ -73,12 +71,5 @@ class _ItemTarefaState extends State<ItemTarefa> {
         checkColor: Colors.white,
       ),
     );
-//    return Card(
-//      child: ListTile(
-//        leading: Icon(Icons.check_box_outline_blank),
-//        title: Text(_tarefa.titulo),
-//        subtitle: Text(_tarefa.descricao),
-//      ),
-//    );
   }
 }
